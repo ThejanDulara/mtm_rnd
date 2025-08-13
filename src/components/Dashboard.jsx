@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import MediaCarousel from './MediaCarousel'; // <-- add this
 
 const tools = [
   {
@@ -41,6 +42,14 @@ const tools = [
 
 function Dashboard() {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [media, setMedia] = React.useState([]);
+
+    React.useEffect(() => {
+      fetch("/ai-highlights/manifest.json", { cache: "no-store" })
+        .then(r => r.json())
+        .then(setMedia)
+        .catch(err => console.error("Failed to load manifest:", err));
+    }, []);
 
   return (
     <div className="dashboard-container">
@@ -80,12 +89,17 @@ function Dashboard() {
         ))}
       </div>
 
-      <div className="ai-video-container">
+    <div className="ai-video-container">
+      {media.length > 0 ? (
+        <MediaCarousel media={media} intervalMs={5000} />
+      ) : (
         <div className="video-placeholder">
           <div className="play-button">▶</div>
           <p>AI Research Highlights</p>
         </div>
-      </div>
+      )}
+    </div>
+
 
       <p className="coming-soon">
         <span className="pulse-dot">⚡</span>
@@ -245,7 +259,11 @@ function Dashboard() {
           overflow: hidden;
           box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
           position: relative;
-          height: 300px;
+
+          /* 🔸 Aspect ratio + fallback min-height */
+          aspect-ratio: 16 / 9;
+          min-height: 420px;
+
           background: linear-gradient(135deg, #6e45e2 0%, #89d4cf 100%);
           display: flex;
           align-items: center;
