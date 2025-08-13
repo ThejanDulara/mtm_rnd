@@ -207,13 +207,16 @@ function MediaCarousel({ media, imageIntervalMs = 1000 }) {
           gap: 6px;
         }
         .dots button {
-          width: 8px;
-          height: 8px;
-          border-radius: 50%;
+          width: 12px;
+          height: 4px;
+          padding: 0;          /* remove padding */
+          line-height: 1;      /* prevent extra vertical space */
+          border-radius: 0;
           border: none;
-          background: rgba(255, 255, 255, 0.5);
+          background: rgba(255, 255, 255, 0.7);
           cursor: pointer;
         }
+
         .dots button.active {
           background: #6e45e2;
         }
