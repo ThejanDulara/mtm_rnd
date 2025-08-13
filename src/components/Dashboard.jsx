@@ -16,7 +16,7 @@ const tools = [
   },
   {
     name: 'Television Media Scheduling Optimization Tool',
-    url: 'http://152.42.219.76',
+    url: 'https://opt-web-app.vercel.app',
     icon: '🤖',
     description: 'Smart media spot allocator using mathematical optimization'
   },
