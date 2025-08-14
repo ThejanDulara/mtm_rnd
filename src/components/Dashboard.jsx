@@ -27,10 +27,10 @@ const tools = [
     description: 'Machine learning and genetic algorithm-based optimization for media mix determination'
   },
   {
-    name: 'Coming soon',
-    url: 'https://thirdshift-rnd.vercel.app/',
+    name: 'Media Objective Identifier',
+    url: 'https://m-objectives.vercel.app',
     icon: '🧮',
-    description: 'AI .......'
+    description: 'Filtering media objectives to streamline decision-making for planning'
   },
   {
     name: 'Coming soon',
