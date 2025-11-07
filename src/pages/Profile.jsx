@@ -108,8 +108,8 @@ export default function Profile() {
         <div style={leftPanel}>
           <div style={leftInner}>
             <img
-              src="/TS-GARA-Mask.png"
-              alt="TS GARA Mask"
+              src="/MTM.png"
+              alt="MTM"
               style={{
                 height: 400,
                 marginBottom: 30,
