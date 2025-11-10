@@ -47,10 +47,20 @@ function Header() {
               <div style={styles.menu}>
                 <button
                   style={styles.menuItem}
+                  onClick={() => { setOpen(false); navigate('/dashboard'); }}
+                >
+                  Dashboard
+                </button>
+
+                <div style={styles.menuDivider}></div>
+
+                <button
+                  style={styles.menuItem}
                   onClick={() => { setOpen(false); navigate('/profile'); }}
                 >
                   Profile
                 </button>
+
                 {Boolean(user.is_admin) && (
                   <>
                     <div style={styles.menuDivider}></div>
@@ -62,7 +72,9 @@ function Header() {
                     </button>
                   </>
                 )}
+
                 <div style={styles.menuDivider}></div>
+
                 <button
                   style={styles.menuItem}
                   onClick={async () => { await signout(); navigate('/signin'); }}
