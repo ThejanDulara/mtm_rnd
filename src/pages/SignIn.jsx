@@ -2,7 +2,7 @@ import React from "react";
 import { useLocation, Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthContext";
 import { api } from "../api";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SignIn() {
@@ -14,25 +14,35 @@ export default function SignIn() {
   const [otp, setOtp] = React.useState("");
   const [newPassword, setNewPassword] = React.useState("");
 
+  // 🔹 Loading states
+  const [isSigningIn, setIsSigningIn] = React.useState(false);
+  const [isSendingOtp, setIsSendingOtp] = React.useState(false);
+  const [isResettingPassword, setIsResettingPassword] = React.useState(false);
+
   const navigate = useNavigate();
   const params = new URLSearchParams(useLocation().search);
   const redirect = params.get("redirect") || "/dashboard";
 
   const onSubmit = async (e) => {
     e.preventDefault();
+
+    // Prevent multiple clicks
+    if (isSigningIn) return;
+
+    setIsSigningIn(true);
+
     try {
-    await signin(email, password);
+      await signin(email, password);
 
-    // ✅ decode redirect safely
-    let decodedRedirect = redirect ? decodeURIComponent(redirect) : null;
+      // ✅ decode redirect safely
+      let decodedRedirect = redirect ? decodeURIComponent(redirect) : null;
 
-    if (decodedRedirect && decodedRedirect.startsWith("http")) {
-      window.location.href = decodedRedirect; // full URL (subdomain)
-    } else {
-      navigate(decodedRedirect || "/dashboard", { replace: true });
-    }
-    }
-    catch (err) {
+      if (decodedRedirect && decodedRedirect.startsWith("http")) {
+        window.location.href = decodedRedirect; // full URL (subdomain)
+      } else {
+        navigate(decodedRedirect || "/dashboard", { replace: true });
+      }
+    } catch (err) {
       const status = err.response?.status;
       const message = err.response?.data?.error || "Sign-in failed";
 
@@ -43,44 +53,59 @@ export default function SignIn() {
       } else {
         toast.error(message);
       }
+    } finally {
+      setIsSigningIn(false);
     }
   };
 
   const sendOtp = async () => {
+    // Prevent multiple clicks
+    if (isSendingOtp) return;
+
+    setIsSendingOtp(true);
+
     try {
       await api.post("/auth/forgot", { email });
       setOtpSent(true);
       toast.success("OTP sent. Check your email.", { containerId: "SignIn" });
     } catch {
       toast.error("Unable to send OTP", { containerId: "SignIn" });
+    } finally {
+      setIsSendingOtp(false);
     }
   };
 
-const resetPwd = async () => {
-  // ✅ Validate password strength before sending to backend
-  const missing = [];
-  if (!/[A-Z]/.test(newPassword)) missing.push("one capital letter");
-  if (!/[0-9]/.test(newPassword)) missing.push("one number");
-  if (!/[!@#$%^&*(),.?\":{}|<>]/.test(newPassword)) missing.push("one special character");
-  if (newPassword.length < 8) missing.push("8 characters");
+  const resetPwd = async () => {
+    // Prevent multiple clicks
+    if (isResettingPassword) return;
 
-  if (missing.length > 0) {
-    toast.warning(`Password must include ${missing.join(", ")}.`, { containerId: "SignIn" });
-    return;
-  }
+    // ✅ Validate password strength before sending to backend
+    const missing = [];
+    if (!/[A-Z]/.test(newPassword)) missing.push("one capital letter");
+    if (!/[0-9]/.test(newPassword)) missing.push("one number");
+    if (!/[!@#$%^&*(),.?\":{}|<>]/.test(newPassword)) missing.push("one special character");
+    if (newPassword.length < 8) missing.push("8 characters");
 
-  try {
-    await api.post("/auth/reset", { email, otp, new_password: newPassword });
-    toast.success("Password updated. Please sign in.", { containerId: "SignIn" });
-    setForgotOpen(false);
-    setOtpSent(false);
-    setOtp("");
-    setNewPassword("");
-  } catch (e) {
-    toast.error(e.response?.data?.error || "Reset failed", { containerId: "SignIn" });
-  }
-};
+    if (missing.length > 0) {
+      toast.warning(`Password must include ${missing.join(", ")}.`, { containerId: "SignIn" });
+      return;
+    }
 
+    setIsResettingPassword(true);
+
+    try {
+      await api.post("/auth/reset", { email, otp, new_password: newPassword });
+      toast.success("Password updated. Please sign in.", { containerId: "SignIn" });
+      setForgotOpen(false);
+      setOtpSent(false);
+      setOtp("");
+      setNewPassword("");
+    } catch (e) {
+      toast.error(e.response?.data?.error || "Reset failed", { containerId: "SignIn" });
+    } finally {
+      setIsResettingPassword(false);
+    }
+  };
 
   return (
     <>
@@ -111,7 +136,7 @@ const resetPwd = async () => {
               <div style={iconCircle}>🤖</div>
               <h2 style={formTitle}>Welcome Back</h2>
               <p style={formSubtitle}>
-                Sign in to your Third Shift Media account
+                Sign in to your MTM Group account
               </p>
             </div>
 
@@ -125,6 +150,7 @@ const resetPwd = async () => {
                   required
                   style={inputStyle}
                   placeholder="Enter your email"
+                  disabled={isSigningIn}
                 />
               </div>
 
@@ -137,6 +163,7 @@ const resetPwd = async () => {
                   required
                   style={inputStyle}
                   placeholder="Enter your password"
+                  disabled={isSigningIn}
                 />
               </div>
 
@@ -157,6 +184,7 @@ const resetPwd = async () => {
                       accentColor: "#3bb9af", // ✅ brand green color
                       cursor: "pointer",
                     }}
+                    disabled={isSigningIn}
                   />
                   Remember me
                 </label>
@@ -164,13 +192,22 @@ const resetPwd = async () => {
                   type="button"
                   onClick={() => setForgotOpen(true)}
                   style={forgotLink}
+                  disabled={isSigningIn}
                 >
                   Forgot password?
                 </button>
               </div>
 
-              <button type="submit" style={primaryBtn}>
-                Sign In →
+              <button
+                type="submit"
+                style={{
+                  ...primaryBtn,
+                  opacity: isSigningIn ? 0.7 : 1,
+                  cursor: isSigningIn ? "not-allowed" : "pointer",
+                }}
+                disabled={isSigningIn}
+              >
+                {isSigningIn ? "Signing In..." : "Sign In →"}
               </button>
 
               <div style={divider}></div>
@@ -178,7 +215,14 @@ const resetPwd = async () => {
               <p style={{ textAlign: "center", fontSize: 14, color: "#4a5568" }}>
                 New to our platform?
               </p>
-              <Link to="/signup" style={secondaryBtn}>
+              <Link
+                to="/signup"
+                style={{
+                  ...secondaryBtn,
+                  pointerEvents: isSigningIn ? "none" : "auto",
+                  opacity: isSigningIn ? 0.7 : 1,
+                }}
+              >
                 Create an account
               </Link>
             </form>
@@ -187,7 +231,7 @@ const resetPwd = async () => {
 
         {/* Forgot password modal */}
         {forgotOpen && (
-          <div style={modalBackdrop} onClick={() => setForgotOpen(false)}>
+          <div style={modalBackdrop} onClick={() => !isSendingOtp && !isResettingPassword && setForgotOpen(false)}>
             <div style={modalBox} onClick={(e) => e.stopPropagation()}>
               <h3 style={{ marginTop: 0, color: "#1a202c", textAlign: "center" }}>
                 Reset Password
@@ -200,7 +244,7 @@ const resetPwd = async () => {
                   marginBottom: 20,
                 }}
               >
-                We’ll send a 6-digit OTP to your email.
+                We'll send a 6-digit OTP to your email.
               </p>
 
               <div style={{ display: "grid", gap: 16 }}>
@@ -210,10 +254,19 @@ const resetPwd = async () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   style={inputStyle}
+                  disabled={isSendingOtp || isResettingPassword}
                 />
                 {!otpSent ? (
-                  <button onClick={sendOtp} style={primaryBtn}>
-                    Send OTP
+                  <button
+                    onClick={sendOtp}
+                    style={{
+                      ...primaryBtn,
+                      opacity: isSendingOtp ? 0.7 : 1,
+                      cursor: isSendingOtp ? "not-allowed" : "pointer",
+                    }}
+                    disabled={isSendingOtp}
+                  >
+                    {isSendingOtp ? "Sending OTP..." : "Send OTP"}
                   </button>
                 ) : (
                   <>
@@ -222,6 +275,7 @@ const resetPwd = async () => {
                       value={otp}
                       onChange={(e) => setOtp(e.target.value)}
                       style={inputStyle}
+                      disabled={isResettingPassword}
                     />
                     {/* === New Password with Validation === */}
                     <div>
@@ -231,6 +285,7 @@ const resetPwd = async () => {
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
                         style={inputStyle}
+                        disabled={isResettingPassword}
                       />
 
                       {/* Password validation messages */}
@@ -250,14 +305,23 @@ const resetPwd = async () => {
                       </ul>
                     </div>
 
-                    <button onClick={resetPwd} style={primaryBtn}>
-                      Set New Password
+                    <button
+                      onClick={resetPwd}
+                      style={{
+                        ...primaryBtn,
+                        opacity: isResettingPassword ? 0.7 : 1,
+                        cursor: isResettingPassword ? "not-allowed" : "pointer",
+                      }}
+                      disabled={isResettingPassword}
+                    >
+                      {isResettingPassword ? "Resetting..." : "Set New Password"}
                     </button>
                   </>
                 )}
                 <button
-                  onClick={() => setForgotOpen(false)}
+                  onClick={() => !isSendingOtp && !isResettingPassword && setForgotOpen(false)}
                   style={textBtnStyle}
+                  disabled={isSendingOtp || isResettingPassword}
                 >
                   Back to Sign In
                 </button>
@@ -355,7 +419,6 @@ const inputStyle = {
   boxSizing: "border-box",
   outline: "none",
 };
-
 
 const forgotLink = {
   background: "none",

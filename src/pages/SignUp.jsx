@@ -1,7 +1,7 @@
 import React from "react";
 import { api } from "../api";
 import { Link, useNavigate } from "react-router-dom";
-import { toast} from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 export default function SignUp() {
@@ -16,6 +16,7 @@ export default function SignUp() {
   const [file, setFile] = React.useState(null);
   const [preview, setPreview] = React.useState(null);
   const [passwordErrors, setPasswordErrors] = React.useState([]);
+  const [isSubmitting, setIsSubmitting] = React.useState(false); // 🔹 Loading state
   const navigate = useNavigate();
 
   // ✅ Password validation
@@ -53,14 +54,17 @@ export default function SignUp() {
   const onSubmit = async (e) => {
     e.preventDefault();
 
+    // Prevent multiple submissions
+    if (isSubmitting) return;
+
     // ✅ Check password match and strength
     if (form.password !== form.confirm) {
-      toast.error("Passwords do not match", { containerId: "SignUp" } );
+      toast.error("Passwords do not match", { containerId: "SignUp" });
       return;
     }
     const errors = validatePassword(form.password);
     if (errors.length > 0) {
-      toast.error("Please meet all password requirements" , { containerId: "SignUp" } );
+      toast.error("Please meet all password requirements", { containerId: "SignUp" });
       setPasswordErrors(errors);
       return;
     }
@@ -71,16 +75,21 @@ export default function SignUp() {
     });
     if (file) fd.append("profile_pic", file);
 
+    setIsSubmitting(true);
+
     try {
       await api.post("/auth/signup", fd, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success(
-        "Application submitted! Your account is under review. You'll receive an email once approved." , { containerId: "SignUp" }
+        "Application submitted! Your account is under review. You'll receive an email once approved.",
+        { containerId: "SignUp" }
       );
       setTimeout(() => navigate("/signin"), 4000);
     } catch (e) {
-      toast.error(e.response?.data?.error || "Sign-up failed", { containerId: "SignUp" } );
+      toast.error(e.response?.data?.error || "Sign-up failed", { containerId: "SignUp" });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -100,8 +109,8 @@ export default function SignUp() {
             />
             <h1 style={leftTitle}>Join MTM Group</h1>
             <p style={leftText}>
-              Be a part of Sri Lanka’s leading AI-driven media intelligence team.
-              Let’s build smarter insights and meaningful media solutions together.
+              Be a part of Sri Lanka's leading AI-driven media intelligence team.
+              Let's build smarter insights and meaningful media solutions together.
             </p>
           </div>
         </div>
@@ -125,7 +134,12 @@ export default function SignUp() {
                   value={form.first_name}
                   onChange={onChange}
                   required
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    opacity: isSubmitting ? 0.7 : 1,
+                    cursor: isSubmitting ? "not-allowed" : "text",
+                  }}
+                  disabled={isSubmitting}
                 />
                 <input
                   name="last_name"
@@ -133,7 +147,12 @@ export default function SignUp() {
                   value={form.last_name}
                   onChange={onChange}
                   required
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    opacity: isSubmitting ? 0.7 : 1,
+                    cursor: isSubmitting ? "not-allowed" : "text",
+                  }}
+                  disabled={isSubmitting}
                 />
               </div>
 
@@ -142,7 +161,12 @@ export default function SignUp() {
                 placeholder="Designation"
                 value={form.designation}
                 onChange={onChange}
-                style={inputStyle}
+                style={{
+                  ...inputStyle,
+                  opacity: isSubmitting ? 0.7 : 1,
+                  cursor: isSubmitting ? "not-allowed" : "text",
+                }}
+                disabled={isSubmitting}
               />
 
               <input
@@ -152,7 +176,12 @@ export default function SignUp() {
                 value={form.email}
                 onChange={onChange}
                 required
-                style={inputStyle}
+                style={{
+                  ...inputStyle,
+                  opacity: isSubmitting ? 0.7 : 1,
+                  cursor: isSubmitting ? "not-allowed" : "text",
+                }}
+                disabled={isSubmitting}
               />
 
               <div>
@@ -163,7 +192,12 @@ export default function SignUp() {
                   value={form.password}
                   onChange={onChange}
                   required
-                  style={inputStyle}
+                  style={{
+                    ...inputStyle,
+                    opacity: isSubmitting ? 0.7 : 1,
+                    cursor: isSubmitting ? "not-allowed" : "text",
+                  }}
+                  disabled={isSubmitting}
                 />
                 {/* ✅ Password validation feedback */}
                 {passwordErrors.length > 0 && (
@@ -182,12 +216,22 @@ export default function SignUp() {
                 value={form.confirm}
                 onChange={onChange}
                 required
-                style={inputStyle}
+                style={{
+                  ...inputStyle,
+                  opacity: isSubmitting ? 0.7 : 1,
+                  cursor: isSubmitting ? "not-allowed" : "text",
+                }}
+                disabled={isSubmitting}
               />
 
               {/* File Upload */}
               <div style={{ display: "grid", gap: 8 }}>
-                <label style={{ fontSize: 14, color: "#4a5568", fontWeight: 500 }}>
+                <label style={{
+                  fontSize: 14,
+                  color: "#4a5568",
+                  fontWeight: 500,
+                  opacity: isSubmitting ? 0.7 : 1
+                }}>
                   Profile picture (optional)
                 </label>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
@@ -201,6 +245,7 @@ export default function SignUp() {
                         borderRadius: "50%",
                         objectFit: "cover",
                         border: "2px solid #e2e8f0",
+                        opacity: isSubmitting ? 0.7 : 1,
                       }}
                     />
                   ) : (
@@ -216,6 +261,7 @@ export default function SignUp() {
                         justifyContent: "center",
                         color: "#718096",
                         fontSize: 12,
+                        opacity: isSubmitting ? 0.7 : 1,
                       }}
                     >
                       No image
@@ -231,9 +277,10 @@ export default function SignUp() {
                         borderRadius: 8,
                         padding: "8px 12px",
                         color: "#000",
-                        cursor: "pointer",
+                        cursor: isSubmitting ? "not-allowed" : "pointer",
                         fontSize: 14,
                         fontWeight: 500,
+                        opacity: isSubmitting ? 0.7 : 1,
                       }}
                     >
                       Choose File
@@ -244,16 +291,29 @@ export default function SignUp() {
                       accept="image/*"
                       onChange={onFileChange}
                       style={{ display: "none" }}
+                      disabled={isSubmitting}
                     />
-                    <span style={{ color: "#000", fontSize: 13 }}>
+                    <span style={{
+                      color: "#000",
+                      fontSize: 13,
+                      opacity: isSubmitting ? 0.7 : 1
+                    }}>
                       {file ? file.name : "No file chosen"}
                     </span>
                   </div>
                 </div>
               </div>
 
-              <button type="submit" style={primaryBtn}>
-                Submit for Approval
+              <button
+                type="submit"
+                style={{
+                  ...primaryBtn,
+                  opacity: isSubmitting ? 0.7 : 1,
+                  cursor: isSubmitting ? "not-allowed" : "pointer",
+                }}
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Submitting..." : "Submit for Approval"}
               </button>
             </form>
 
@@ -263,6 +323,7 @@ export default function SignUp() {
                 textAlign: "center",
                 fontSize: 14,
                 color: "#718096",
+                opacity: isSubmitting ? 0.7 : 1,
               }}
             >
               Already have an account?{" "}
@@ -272,6 +333,7 @@ export default function SignUp() {
                   color: "#3bb9af",
                   textDecoration: "none",
                   fontWeight: 500,
+                  pointerEvents: isSubmitting ? "none" : "auto",
                 }}
               >
                 Sign in
@@ -287,9 +349,9 @@ export default function SignUp() {
 /* === STYLES === */
 const pageWrapper = {
   width: "100%",
-  minHeight: "100vh", // ✅ instead of height: 100vh
+  minHeight: "100vh",
   display: "flex",
-  flexWrap: "wrap", // ✅ allows stacking on smaller screens
+  flexWrap: "wrap",
   background: "#fff",
   position: "relative",
   overflow: "hidden",
