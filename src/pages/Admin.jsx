@@ -6,14 +6,8 @@ export default function Admin() {
   const [pending, setPending] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
 
-  // 🔹 Action loading state
-  const [actionLoading, setActionLoading] = React.useState({
-    id: null,
-    type: null, // "approve" | "reject" | "delete"
-  });
-
-  // 🔹 Small helper to make loading state visible
-  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
+  // 🔹 Track loading states for each user+action
+  const [actionLoading, setActionLoading] = React.useState({});
 
   const load = async () => {
     try {
@@ -35,46 +29,68 @@ export default function Admin() {
   }, []);
 
   const approve = async (id) => {
+    // Create unique key for this action
+    const actionKey = `${id}_approve`;
+
+    // Prevent re-clicking if already loading
+    if (actionLoading[actionKey]) return;
+
     try {
-      setActionLoading({ id, type: "approve" });
-      await sleep(500); // 👈 makes state visible
+      // Set loading BEFORE API call
+      setActionLoading(prev => ({ ...prev, [actionKey]: true }));
+
+      // Remove the artificial sleep - let it show loading until API completes
       await api.post("/admin/approve", { user_id: id });
+
       toast.success("Approved & emailed user", { containerId: "Admin" });
       load();
     } catch (e) {
       toast.error("Approval failed", { containerId: "Admin" });
     } finally {
-      setActionLoading({ id: null, type: null });
+      // Clear loading state AFTER API completes (success or error)
+      setActionLoading(prev => ({ ...prev, [actionKey]: false }));
     }
   };
 
   const reject = async (id) => {
+    const actionKey = `${id}_reject`;
+
+    if (actionLoading[actionKey]) return;
+
     try {
-      setActionLoading({ id, type: "reject" });
-      await sleep(500);
+      setActionLoading(prev => ({ ...prev, [actionKey]: true }));
       await api.post("/admin/reject", { user_id: id });
       toast.info("User rejected", { containerId: "Admin" });
       load();
     } catch (e) {
       toast.error("Rejection failed", { containerId: "Admin" });
     } finally {
-      setActionLoading({ id: null, type: null });
+      setActionLoading(prev => ({ ...prev, [actionKey]: false }));
     }
   };
 
   const remove = async (id, isAdmin) => {
     if (isAdmin) return;
+
+    const actionKey = `${id}_delete`;
+
+    if (actionLoading[actionKey]) return;
+
     try {
-      setActionLoading({ id, type: "delete" });
-      await sleep(500);
+      setActionLoading(prev => ({ ...prev, [actionKey]: true }));
       await api.delete(`/admin/users/${id}`);
       toast.info("Account deleted", { containerId: "Admin" });
       load();
     } catch (e) {
       toast.error("Delete failed", { containerId: "Admin" });
     } finally {
-      setActionLoading({ id: null, type: null });
+      setActionLoading(prev => ({ ...prev, [actionKey]: false }));
     }
+  };
+
+  // Helper to check if a specific action is loading
+  const isLoading = (id, type) => {
+    return actionLoading[`${id}_${type}`] || false;
   };
 
   return (
@@ -121,42 +137,22 @@ export default function Admin() {
                           onClick={() => approve(u.id)}
                           style={{
                             ...btnApprove,
-                            opacity:
-                              actionLoading.id === u.id &&
-                              actionLoading.type === "approve"
-                                ? 0.6
-                                : 1,
+                            opacity: isLoading(u.id, "approve") ? 0.6 : 1,
                           }}
-                          disabled={
-                            actionLoading.id === u.id &&
-                            actionLoading.type === "approve"
-                          }
+                          disabled={isLoading(u.id, "approve")}
                         >
-                          {actionLoading.id === u.id &&
-                          actionLoading.type === "approve"
-                            ? "Approving..."
-                            : "Approve"}
+                          {isLoading(u.id, "approve") ? "Approving..." : "Approve"}
                         </button>
 
                         <button
                           onClick={() => reject(u.id)}
                           style={{
                             ...btnReject,
-                            opacity:
-                              actionLoading.id === u.id &&
-                              actionLoading.type === "reject"
-                                ? 0.6
-                                : 1,
+                            opacity: isLoading(u.id, "reject") ? 0.6 : 1,
                           }}
-                          disabled={
-                            actionLoading.id === u.id &&
-                            actionLoading.type === "reject"
-                          }
+                          disabled={isLoading(u.id, "reject")}
                         >
-                          {actionLoading.id === u.id &&
-                          actionLoading.type === "reject"
-                            ? "Rejecting..."
-                            : "Reject"}
+                          {isLoading(u.id, "reject") ? "Rejecting..." : "Reject"}
                         </button>
                       </td>
                     </tr>
@@ -208,29 +204,12 @@ export default function Admin() {
                           onClick={() => remove(u.id, u.is_admin)}
                           style={{
                             ...btnDelete,
-                            opacity:
-                              u.is_admin ||
-                              (actionLoading.id === u.id &&
-                                actionLoading.type === "delete")
-                                ? 0.4
-                                : 1,
-                            cursor:
-                              u.is_admin ||
-                              (actionLoading.id === u.id &&
-                                actionLoading.type === "delete")
-                                ? "not-allowed"
-                                : "pointer",
+                            opacity: u.is_admin || isLoading(u.id, "delete") ? 0.4 : 1,
+                            cursor: u.is_admin || isLoading(u.id, "delete") ? "not-allowed" : "pointer",
                           }}
-                          disabled={
-                            u.is_admin ||
-                            (actionLoading.id === u.id &&
-                              actionLoading.type === "delete")
-                          }
+                          disabled={u.is_admin || isLoading(u.id, "delete")}
                         >
-                          {actionLoading.id === u.id &&
-                          actionLoading.type === "delete"
-                            ? "Deleting..."
-                            : "Delete"}
+                          {isLoading(u.id, "delete") ? "Deleting..." : "Delete"}
                         </button>
                       </td>
                     </tr>
