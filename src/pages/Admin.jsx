@@ -6,11 +6,14 @@ export default function Admin() {
   const [pending, setPending] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
 
-  // 🔹 NEW: action loading state
+  // 🔹 Action loading state
   const [actionLoading, setActionLoading] = React.useState({
     id: null,
     type: null, // "approve" | "reject" | "delete"
   });
+
+  // 🔹 Small helper to make loading state visible
+  const sleep = (ms) => new Promise((res) => setTimeout(res, ms));
 
   const load = async () => {
     try {
@@ -34,6 +37,7 @@ export default function Admin() {
   const approve = async (id) => {
     try {
       setActionLoading({ id, type: "approve" });
+      await sleep(500); // 👈 makes state visible
       await api.post("/admin/approve", { user_id: id });
       toast.success("Approved & emailed user", { containerId: "Admin" });
       load();
@@ -47,6 +51,7 @@ export default function Admin() {
   const reject = async (id) => {
     try {
       setActionLoading({ id, type: "reject" });
+      await sleep(500);
       await api.post("/admin/reject", { user_id: id });
       toast.info("User rejected", { containerId: "Admin" });
       load();
@@ -61,6 +66,7 @@ export default function Admin() {
     if (isAdmin) return;
     try {
       setActionLoading({ id, type: "delete" });
+      await sleep(500);
       await api.delete(`/admin/users/${id}`);
       toast.info("Account deleted", { containerId: "Admin" });
       load();
@@ -238,7 +244,6 @@ export default function Admin() {
     </section>
   );
 }
-
 
 /* === STYLES === */
 const pageWrapper = {
