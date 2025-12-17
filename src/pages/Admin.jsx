@@ -6,6 +6,12 @@ export default function Admin() {
   const [pending, setPending] = React.useState([]);
   const [allUsers, setAllUsers] = React.useState([]);
 
+  // 🔹 NEW: action loading state
+  const [actionLoading, setActionLoading] = React.useState({
+    id: null,
+    type: null, // "approve" | "reject" | "delete"
+  });
+
   const load = async () => {
     try {
       const [pendingRes, allRes] = await Promise.all([
@@ -14,7 +20,6 @@ export default function Admin() {
       ]);
 
       setPending(pendingRes.data);
-      // ✅ Only show approved non-admin users in "All Users"
       const approvedUsers = allRes.data.filter((u) => u.is_approved === 1);
       setAllUsers(approvedUsers);
     } catch (e) {
@@ -27,22 +32,43 @@ export default function Admin() {
   }, []);
 
   const approve = async (id) => {
-    await api.post("/admin/approve", { user_id: id });
-    toast.success("Approved & emailed user" ,{ containerId: "Admin" });
-    load();
+    try {
+      setActionLoading({ id, type: "approve" });
+      await api.post("/admin/approve", { user_id: id });
+      toast.success("Approved & emailed user", { containerId: "Admin" });
+      load();
+    } catch (e) {
+      toast.error("Approval failed", { containerId: "Admin" });
+    } finally {
+      setActionLoading({ id: null, type: null });
+    }
   };
 
   const reject = async (id) => {
-    await api.post("/admin/reject", { user_id: id });
-    toast.info("User rejected",{ containerId: "Admin" });
-    load();
+    try {
+      setActionLoading({ id, type: "reject" });
+      await api.post("/admin/reject", { user_id: id });
+      toast.info("User rejected", { containerId: "Admin" });
+      load();
+    } catch (e) {
+      toast.error("Rejection failed", { containerId: "Admin" });
+    } finally {
+      setActionLoading({ id: null, type: null });
+    }
   };
 
   const remove = async (id, isAdmin) => {
-    if (isAdmin) return; // prevent removing admins
-    await api.delete(`/admin/users/${id}`);
-    toast.info("Account deleted",{ containerId: "Admin" });
-    load();
+    if (isAdmin) return;
+    try {
+      setActionLoading({ id, type: "delete" });
+      await api.delete(`/admin/users/${id}`);
+      toast.info("Account deleted", { containerId: "Admin" });
+      load();
+    } catch (e) {
+      toast.error("Delete failed", { containerId: "Admin" });
+    } finally {
+      setActionLoading({ id: null, type: null });
+    }
   };
 
   return (
@@ -72,26 +98,59 @@ export default function Admin() {
                     <tr key={u.id}>
                       <td style={td}>
                         <img
-                        src={
-                          u.profile_pic
-                            ? `${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${u.profile_pic}`
-                            : "/static/default-avatar.png"
-                        }
+                          src={
+                            u.profile_pic
+                              ? `${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${u.profile_pic}`
+                              : "/static/default-avatar.png"
+                          }
                           alt="Profile"
                           style={profilePic}
                         />
                       </td>
-                      <td style={td}>
-                        {u.first_name} {u.last_name}
-                      </td>
+                      <td style={td}>{u.first_name} {u.last_name}</td>
                       <td style={td}>{u.email}</td>
                       <td style={td}>{u.designation || "-"}</td>
                       <td style={td}>
-                        <button onClick={() => approve(u.id)} style={btnApprove}>
-                          Approve
+                        <button
+                          onClick={() => approve(u.id)}
+                          style={{
+                            ...btnApprove,
+                            opacity:
+                              actionLoading.id === u.id &&
+                              actionLoading.type === "approve"
+                                ? 0.6
+                                : 1,
+                          }}
+                          disabled={
+                            actionLoading.id === u.id &&
+                            actionLoading.type === "approve"
+                          }
+                        >
+                          {actionLoading.id === u.id &&
+                          actionLoading.type === "approve"
+                            ? "Approving..."
+                            : "Approve"}
                         </button>
-                        <button onClick={() => reject(u.id)} style={btnReject}>
-                          Reject
+
+                        <button
+                          onClick={() => reject(u.id)}
+                          style={{
+                            ...btnReject,
+                            opacity:
+                              actionLoading.id === u.id &&
+                              actionLoading.type === "reject"
+                                ? 0.6
+                                : 1,
+                          }}
+                          disabled={
+                            actionLoading.id === u.id &&
+                            actionLoading.type === "reject"
+                          }
+                        >
+                          {actionLoading.id === u.id &&
+                          actionLoading.type === "reject"
+                            ? "Rejecting..."
+                            : "Reject"}
                         </button>
                       </td>
                     </tr>
@@ -125,18 +184,16 @@ export default function Admin() {
                     <tr key={u.id}>
                       <td style={td}>
                         <img
-                        src={
-                          u.profile_pic
-                            ? `${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${u.profile_pic}`
-                            : "/static/default-avatar.png"
-                        }
+                          src={
+                            u.profile_pic
+                              ? `${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${u.profile_pic}`
+                              : "/static/default-avatar.png"
+                          }
                           alt="Profile"
                           style={profilePic}
                         />
                       </td>
-                      <td style={td}>
-                        {u.first_name} {u.last_name}
-                      </td>
+                      <td style={td}>{u.first_name} {u.last_name}</td>
                       <td style={td}>{u.email}</td>
                       <td style={td}>{u.designation || "-"}</td>
                       <td style={td}>{u.is_admin ? "Yes" : "No"}</td>
@@ -145,12 +202,29 @@ export default function Admin() {
                           onClick={() => remove(u.id, u.is_admin)}
                           style={{
                             ...btnDelete,
-                            opacity: u.is_admin ? 0.4 : 1,
-                            cursor: u.is_admin ? "not-allowed" : "pointer",
+                            opacity:
+                              u.is_admin ||
+                              (actionLoading.id === u.id &&
+                                actionLoading.type === "delete")
+                                ? 0.4
+                                : 1,
+                            cursor:
+                              u.is_admin ||
+                              (actionLoading.id === u.id &&
+                                actionLoading.type === "delete")
+                                ? "not-allowed"
+                                : "pointer",
                           }}
-                          disabled={u.is_admin}
+                          disabled={
+                            u.is_admin ||
+                            (actionLoading.id === u.id &&
+                              actionLoading.type === "delete")
+                          }
                         >
-                          Delete
+                          {actionLoading.id === u.id &&
+                          actionLoading.type === "delete"
+                            ? "Deleting..."
+                            : "Delete"}
                         </button>
                       </td>
                     </tr>
@@ -164,6 +238,7 @@ export default function Admin() {
     </section>
   );
 }
+
 
 /* === STYLES === */
 const pageWrapper = {
