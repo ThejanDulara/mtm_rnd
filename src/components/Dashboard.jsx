@@ -11,6 +11,7 @@ const tools = [
   { name:'Multimedia Reach Analyzer', url:'https://mmmr.mtmgroup.agency/', icon:'📈', description:'ML & genetic algorithm-based optimization for media mix' },
   { name:'Media Objective Identifier', url:'https://mo.mtmgroup.agency/', icon:'🧮', description:'Filtering media objectives to streamline decision-making' },
   { name:'Television Media Reach Predictor', url:'https://tmrp.mtmgroup.agency/', icon:'📺', description:'ML-based TV reach prediction for smarter planning' },
+  { name:'Power BI Dashboards', url:'https://pbi.mtmgroup.agency/', icon:'📊', description:'Centralized library of Power BI dashboards' },
   { name:'Coming Soon', url:'https://www.mtmgroup.agency/dashboard', icon:'✨', description:'AI-driven modules currently under development' },
 ];
 
