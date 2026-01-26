@@ -13,6 +13,8 @@ const tools = [
   { name:'Television Media Reach Predictor', url:'https://tmrp.mtmgroup.agency/', icon:'📺', description:'ML-based TV reach prediction for smarter planning' },
   { name:'Power BI Dashboards', url:'https://pbi.mtmgroup.agency/', icon:'📊', description:'Centralized library of Power BI dashboards' },
   { name:'Project Management tool', url:'https://pm.mtmgroup.agency/', icon:'🗃️', description:'Manage all projects in one centralized workspace' },
+  { name:'Joseph W. Ostrow – Frequency Estimator ', url:'https://fe.mtmgroup.agency/', icon:'📐️', description:'Frequency planning tool based on the Ostrow model for effective reach optimization' },
+  { name:'SOV/SOM Based Budget Planning tool', url:'https://bp.mtmgroup.agency/', icon:'🎯', description:'Manage all projects in one centralized workspace' },
   { name:'Coming Soon', url:'https://www.mtmgroup.agency/dashboard', icon:'✨', description:'AI-driven modules currently under development' },
 ];
 
