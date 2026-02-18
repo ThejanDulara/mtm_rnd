@@ -41,7 +41,7 @@ export default function Dashboard() {
           <div style={styles.heroIcon}>🤖</div>
           <h1 style={styles.heroTitle}>
             Welcome{user ? `, ${user.first_name}` : ""} to the{" "}
-            <span style={{ color: "#3bb9af" }}>MTM Group AI Research Hub</span>
+            <span style={{ color: "#3bb9af" }}>Media Factory AI Research Hub</span>
           </h1>
           <p style={styles.heroText}>
             Smart media decisions powered by <strong>AI</strong> and{" "}

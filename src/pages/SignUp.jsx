@@ -122,7 +122,7 @@ export default function SignUp() {
               <div style={iconCircle}>📋</div>
               <h2 style={formTitle}>Create Account</h2>
               <p style={formSubtitle}>
-                Join MTM Group AI Research Hub
+                Join Media Factory AI Research Hub
               </p>
             </div>
 
