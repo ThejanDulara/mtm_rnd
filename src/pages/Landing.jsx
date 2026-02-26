@@ -33,8 +33,35 @@ export default function Landing() {
       }}
     >
 
+      <style>
+        {`
+          .landing-hero {
+            flex-direction: row;
+          }
+          .landing-left-panel {
+            border-radius: 24px 0 0 24px;
+          }
+          .landing-right-panel {
+            border-radius: 0 24px 24px 0;
+          }
+          @media (max-width: 768px) {
+            .landing-hero {
+               flex-direction: column !important;
+               padding: 40px 20px !important;
+            }
+            .landing-left-panel {
+               border-radius: 24px 24px 0 0 !important;
+            }
+            .landing-right-panel {
+               border-radius: 0 0 24px 24px !important;
+            }
+          }
+        `}
+      </style>
+
       {/* === Hero Section === */}
       <section
+        className="landing-hero"
         style={{
           display: "flex",
           alignItems: "stretch",
@@ -48,10 +75,10 @@ export default function Landing() {
       >
         {/* Left Panel (with image + about) */}
         <div
+          className="landing-left-panel"
           style={{
             flex: 1,
             background: "rgba(255,255,255,0.9)",
-            borderRadius: "24px 0 0 24px",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
@@ -103,10 +130,10 @@ export default function Landing() {
 
         {/* Right Panel (title + buttons) */}
         <div
+          className="landing-right-panel"
           style={{
             flex: 1,
             background: "#fff",
-            borderRadius: "0 24px 24px 0",
             display: "flex",
             flexDirection: "column",
             alignItems: "center",
