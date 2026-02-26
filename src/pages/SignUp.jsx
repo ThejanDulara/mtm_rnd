@@ -95,19 +95,25 @@ export default function SignUp() {
 
   return (
     <>
-      <section style={pageWrapper}>
+      <section style={pageWrapper} className="auth-page-wrapper">
         {/* Left gradient panel */}
-        <div style={leftPanel}>
-          <div style={leftInner}>
+        <div style={leftPanel} className="auth-left-panel">
+          <div style={leftInner} className="auth-left-inner">
             <img
               src="/MTM.png"
               alt="MTM"
               style={{
-                height: 500,
+                maxHeight: 500,
+                maxWidth: "100%",
+                height: "auto",
+                objectFit: "contain",
                 filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.2))",
+                margin: "0 auto",
+                display: "block"
               }}
+              className="auth-hero-img"
             />
-            <h1 style={leftTitle}>Join MTM Group</h1>
+            <h1 style={leftTitle}>Join Media Factory  </h1>
             <p style={leftText}>
               Be a part of Sri Lanka's leading AI-driven media intelligence team.
               Let's build smarter insights and meaningful media solutions together.
@@ -127,7 +133,7 @@ export default function SignUp() {
             </div>
 
             <form onSubmit={onSubmit} style={{ display: "grid", gap: 16 }}>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+              <div className="signup-name-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <input
                   name="first_name"
                   placeholder="First name"
@@ -330,7 +336,7 @@ export default function SignUp() {
               <Link
                 to="/signin"
                 style={{
-                  color: "#3bb9af",
+                  color: "#ee2028",
                   textDecoration: "none",
                   fontWeight: 500,
                   pointerEvents: isSubmitting ? "none" : "auto",
@@ -359,17 +365,17 @@ const pageWrapper = {
 
 const leftPanel = {
   flex: 1,
-  background: "linear-gradient(135deg, #3bb9af 0%, #b3dc39 100%)",
+  background: "linear-gradient(135deg, #ee2028 0%, #111111 100%)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#fff",
-  padding: "60px 40px",
+  padding: "clamp(20px, 4vw, 40px) clamp(10px, 3vw, 20px)",
 };
 
-const leftInner = { textAlign: "center", maxWidth: 500 };
+const leftInner = { textAlign: "center", maxWidth: 500, width: "100%" };
 const leftTitle = { fontSize: 32, fontWeight: 700, marginBottom: 16 };
-const leftText = { fontSize: 18, lineHeight: 1.6, color: "#000" };
+const leftText = { fontSize: 18, lineHeight: 1.6, color: "rgba(255,255,255,0.9)" };
 
 const rightPanel = {
   flex: 1,
@@ -377,7 +383,7 @@ const rightPanel = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "40px 20px",
+  padding: "clamp(20px, 5vw, 40px) clamp(15px, 4vw, 30px)",
 };
 
 const formBox = {
@@ -394,7 +400,7 @@ const iconCircle = {
   width: 60,
   height: 60,
   borderRadius: "50%",
-  backgroundColor: "#76cec7",
+  backgroundColor: "#ff4d54",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -425,7 +431,7 @@ const inputStyle = {
 };
 
 const primaryBtn = {
-  backgroundColor: "#3bb9af",
+  backgroundColor: "#ee2028",
   color: "#fff",
   padding: "12px",
   border: "none",

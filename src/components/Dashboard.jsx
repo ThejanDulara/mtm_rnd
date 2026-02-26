@@ -5,17 +5,17 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const tools = [
-  { name:'Communication Objective Prioritization Tool', url:'https://copt.mediafactorylk.agency/', icon:'🧠', description:'Data-driven prioritization engine for communication strategies' },
-  { name:'Campaign Touchpoint Scorer', url:'https://cts.mediafactorylk.agency/', icon:'📊', description:'Campaign Touchpoint Prioritization via Weighted Communication Task Scoring' },
-  { name:'Television Media Scheduling Optimization Tool', url:'https://opt.mediafactorylk.agency/', icon:'🤖', description:'Smart media spot allocator using mathematical optimization' },
-  { name:'Multimedia Reach Analyzer', url:'https://mmmr.mediafactorylk.agency/', icon:'📈', description:'ML & genetic algorithm-based optimization for media mix' },
-  { name:'Media Objective Identifier', url:'https://mo.mediafactorylk.agency/', icon:'🧮', description:'Filtering media objectives to streamline decision-making' },
-  { name:'Television Media Reach Predictor', url:'https://tmrp.mediafactorylk.agency/', icon:'📺', description:'ML-based TV reach prediction for smarter planning' },
-  { name:'Power BI Dashboards', url:'https://pbi.mediafactorylk.agency/', icon:'📊', description:'Centralized library of Power BI dashboards' },
-  { name:'Project Management tool', url:'https://pm.mediafactorylk.agency/', icon:'🗃️', description:'Manage all projects in one centralized workspace' },
-  { name:'Joseph W. Ostrow – Frequency Estimator ', url:'https://fe.mediafactorylk.agency/', icon:'📐️', description:'Frequency planning tool based on the Ostrow model for effective reach optimization' },
-  { name:'SOV/SOM Based Budget Planning tool', url:'https://bp.mediafactorylk.agency/', icon:'🎯', description:'Manage all projects in one centralized workspace' },
-  { name:'Coming Soon', url:'https://www.mediafactorylk.agency/dashboard', icon:'✨', description:'AI-driven modules currently under development' },
+  { name: 'Communication Objective Prioritization Tool', url: 'https://copt.mediafactorylk.agency/', icon: '🧠', description: 'Data-driven prioritization engine for communication strategies' },
+  { name: 'Campaign Touchpoint Scorer', url: 'https://cts.mediafactorylk.agency/', icon: '📊', description: 'Campaign Touchpoint Prioritization via Weighted Communication Task Scoring' },
+  { name: 'Television Media Scheduling Optimization Tool', url: 'https://opt.mediafactorylk.agency/', icon: '🤖', description: 'Smart media spot allocator using mathematical optimization' },
+  { name: 'Multimedia Reach Analyzer', url: 'https://mmmr.mediafactorylk.agency/', icon: '📈', description: 'ML & genetic algorithm-based optimization for media mix' },
+  { name: 'Media Objective Identifier', url: 'https://mo.mediafactorylk.agency/', icon: '🧮', description: 'Filtering media objectives to streamline decision-making' },
+  { name: 'Television Media Reach Predictor', url: 'https://tmrp.mediafactorylk.agency/', icon: '📺', description: 'ML-based TV reach prediction for smarter planning' },
+  { name: 'Power BI Dashboards', url: 'https://pbi.mediafactorylk.agency/', icon: '📊', description: 'Centralized library of Power BI dashboards' },
+  { name: 'Project Management tool', url: 'https://pm.mediafactorylk.agency/', icon: '🗃️', description: 'Manage all projects in one centralized workspace' },
+  { name: 'Joseph W. Ostrow – Frequency Estimator ', url: 'https://fe.mediafactorylk.agency/', icon: '📐️', description: 'Frequency planning tool based on the Ostrow model for effective reach optimization' },
+  { name: 'SOV/SOM Based Budget Planning tool', url: 'https://bp.mediafactorylk.agency/', icon: '🎯', description: 'Manage all projects in one centralized workspace' },
+  { name: 'Coming Soon', url: 'https://www.mediafactorylk.agency/dashboard', icon: '✨', description: 'AI-driven modules currently under development' },
 ];
 
 export default function Dashboard() {
@@ -31,17 +31,17 @@ export default function Dashboard() {
   }, []);
 
   return (
-    <div style={styles.pageWrapper}>
+    <div style={{ ...styles.pageWrapper, boxSizing: "border-box" }} className="dashboard-page-wrapper">
       {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={4000} theme="light" style={{ zIndex: 9999 }} />
 
       {/* Header Section */}
-      <section style={styles.heroSection}>
-        <div style={styles.heroInner}>
+      <section style={{ ...styles.heroSection, boxSizing: "border-box" }}>
+        <div style={{ ...styles.heroInner, boxSizing: "border-box" }} className="hero-inner-container">
           <div style={styles.heroIcon}>🤖</div>
           <h1 style={styles.heroTitle}>
             Welcome{user ? `, ${user.first_name}` : ""} to the{" "}
-            <span style={{ color: "#3bb9af" }}>Media Factory AI Research Hub</span>
+            <span style={{ color: "#ee2028" }}>Media Factory AI Research Hub</span>
           </h1>
           <p style={styles.heroText}>
             Smart media decisions powered by <strong>AI</strong> and{" "}
@@ -51,9 +51,9 @@ export default function Dashboard() {
       </section>
 
       {/* Tools Section */}
-      <section style={styles.toolsSection}>
+      <section style={styles.toolsSection} className="tools-section">
         <h2 style={styles.sectionTitle}>Explore Our Tools</h2>
-        <div style={styles.cardGrid}>
+        <div style={styles.cardGrid} className="card-grid">
           {tools.map((tool, i) => (
             <a
               key={i}
@@ -68,7 +68,7 @@ export default function Dashboard() {
                 transform: hoveredCard === i ? "translateY(-6px)" : "none",
                 boxShadow:
                   hoveredCard === i
-                    ? "0 10px 25px rgba(59,185,175,0.2)"
+                    ? "0 10px 25px rgba(238,32,40,0.2)"
                     : "0 4px 12px rgba(0,0,0,0.06)",
               }}
             >
@@ -108,7 +108,7 @@ export default function Dashboard() {
 /* === STYLES === */
 const styles = {
   pageWrapper: {
-    background: "linear-gradient(135deg, #f7fafc 0%, #e6f8f5 100%)",
+    background: "linear-gradient(135deg, #f7fafc 0%, #f8f8f8 100%)",
     minHeight: "100vh",
     padding: "40px 20px",
     fontFamily:
@@ -123,7 +123,7 @@ const styles = {
     background: "white",
     borderRadius: 20,
     boxShadow: "0 8px 30px rgba(0,0,0,0.08)",
-    padding: "40px 30px",
+    padding: "clamp(20px, 5vw, 40px) clamp(15px, 4vw, 30px)",
     maxWidth: 900,
     margin: "0 auto",
     border: "1px solid #edf2f7",
@@ -151,7 +151,7 @@ const styles = {
   sectionTitle: {
     fontSize: 22,
     fontWeight: 700,
-    color: "#3bb9af",
+    color: "#ee2028",
     marginBottom: 24,
   },
   cardGrid: {
@@ -176,8 +176,8 @@ const styles = {
   },
   toolIcon: {
     fontSize: 30,
-    background: "#e8f9f7",
-    color: "#3bb9af",
+    background: "#ffe8e9",
+    color: "#ee2028",
     borderRadius: 12,
     padding: 16,
     flexShrink: 0,
@@ -200,13 +200,14 @@ const styles = {
     textAlign: "center",
   },
   videoWrapper: {
+    width: "100%",
     maxWidth: 900,
     margin: "0 auto",
     borderRadius: 16,
     overflow: "hidden",
     boxShadow: "0 8px 30px rgba(0,0,0,0.1)",
     aspectRatio: "16/9",
-    background: "linear-gradient(135deg, #3bb9af 0%, #b3dc39 100%)",
+    background: "linear-gradient(135deg, #ee2028 0%, #111111 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -224,7 +225,7 @@ const styles = {
   footer: {
     marginTop: 50,
     textAlign: "center",
-    color: "#3bb9af",
+    color: "#ee2028",
     fontStyle: "italic",
     fontWeight: 500,
   },

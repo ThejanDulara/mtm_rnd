@@ -20,7 +20,7 @@ function App() {
   return (
     <AuthProvider>
       <BrowserRouter>
-      <ScrollToTop />
+        <ScrollToTop />
         <ToastContainer containerId="profile" position="top-right" autoClose={4000} theme="light" style={{ zIndex: 9999 }} />
         <ToastContainer containerId="SignIn" position="top-right" autoClose={4000} theme="light" style={{ zIndex: 9999 }} />
         <ToastContainer containerId="SignUp" position="top-right" autoClose={4000} theme="light" style={{ zIndex: 9999 }} />
@@ -31,7 +31,7 @@ function App() {
           <Header />
 
           <div className="content-container">
-            <div className="section-wrapper">
+            <div className="section-wrapper animate-slide-up">
               <Routes>
                 <Route path="/" element={<Landing />} />
                 <Route path="/signin" element={<SignIn />} />
@@ -54,7 +54,7 @@ function App() {
           <style jsx>{`
             .app-container {
               font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-              background: #d9ee9c;
+              background: #fcfcfc;
               display: flex;
               flex-direction: column;
               min-height: 100vh;
@@ -64,7 +64,7 @@ function App() {
             .ai-background {
               position: absolute;
               top: 0; left: 0; right: 0; bottom: 0;
-              background: linear-gradient(135deg, #6e45e2 0%, #89d4cf 100%);
+              background: linear-gradient(135deg, #000000 0%, #333333 100%);
               opacity: 0.1;
               z-index: 0;
             }
@@ -73,8 +73,8 @@ function App() {
               position: absolute;
               width: 100%; height: 100%;
               background-image:
-                radial-gradient(circle at 20% 30%, rgba(110, 69, 226, 0.15) 0%, transparent 20%),
-                radial-gradient(circle at 80% 70%, rgba(137, 212, 207, 0.15) 0%, transparent 20%);
+                radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 80% 70%, rgba(238, 32, 40, 0.15) 0%, transparent 20%);
               animation: pulse 15s infinite alternate;
             }
             @keyframes pulse { 0% {opacity:0.3;} 100% {opacity:0.7;} }
@@ -98,7 +98,10 @@ function App() {
               border: 1px solid rgba(255, 255, 255, 0.2);
             }
             @media (min-width: 1400px) { .content-container { padding: 0 4rem; } }
-            @media (max-width: 768px) { .content-container { padding: 0 1rem; } }
+            @media (max-width: 768px) { 
+              .content-container { padding: 0; margin-top: 1rem; margin-bottom: 1rem; } 
+              .section-wrapper { padding: 1rem; border-radius: 0; border-left: none; border-right: none; }
+            }
           `}</style>
         </div>
       </BrowserRouter>

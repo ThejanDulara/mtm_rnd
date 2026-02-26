@@ -110,17 +110,23 @@ export default function SignIn() {
   return (
     <>
       {/* === Full-page layout === */}
-      <section style={pageWrapper}>
+      <section style={pageWrapper} className="auth-page-wrapper">
         {/* Left gradient panel */}
-        <div style={leftPanel}>
-          <div style={leftInner}>
+        <div style={leftPanel} className="auth-left-panel">
+          <div style={leftInner} className="auth-left-inner">
             <img
               src="/MTM.png"
               alt="MTM"
               style={{
-                height: 500,
+                maxHeight: 500,
+                maxWidth: "100%",
+                height: "auto",
+                objectFit: "contain",
                 filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.2))",
+                margin: "0 auto",
+                display: "block"
               }}
+              className="auth-hero-img"
             />
             <h1 style={leftTitle}>Media Intelligence Platform</h1>
             <p style={leftText}>
@@ -181,7 +187,7 @@ export default function SignIn() {
                     style={{
                       width: 16,
                       height: 16,
-                      accentColor: "#3bb9af", // ✅ brand green color
+                      accentColor: "#ee2028", // ✅ brand green color
                       cursor: "pointer",
                     }}
                     disabled={isSigningIn}
@@ -347,16 +353,16 @@ const pageWrapper = {
 /* Left gradient */
 const leftPanel = {
   flex: 1,
-  background: "linear-gradient(135deg, #3bb9af 0%, #b3dc39 100%)",
+  background: "linear-gradient(135deg, #ee2028 0%, #111111 100%)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#fff",
-  padding: "60px 40px",
+  padding: "clamp(20px, 4vw, 40px) clamp(10px, 3vw, 20px)",
 };
-const leftInner = { textAlign: "center", maxWidth: 500 };
+const leftInner = { textAlign: "center", maxWidth: 500, width: "100%" };
 const leftTitle = { fontSize: 32, fontWeight: 700, marginBottom: 16 };
-const leftText = { fontSize: 18, lineHeight: 1.6, color: "#000000" };
+const leftText = { fontSize: 18, lineHeight: 1.6, color: "rgba(255,255,255,0.9)" };
 
 /* Right side */
 const rightPanel = {
@@ -365,7 +371,7 @@ const rightPanel = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "40px 20px",
+  padding: "clamp(20px, 5vw, 40px) clamp(15px, 4vw, 30px)",
 };
 
 const formBox = {
@@ -382,7 +388,7 @@ const iconCircle = {
   width: 60,
   height: 60,
   borderRadius: "50%",
-  backgroundColor: "#76cec7",
+  backgroundColor: "#ff4d54",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -423,13 +429,13 @@ const inputStyle = {
 const forgotLink = {
   background: "none",
   border: "none",
-  color: "#3bb9af",
+  color: "#ee2028",
   cursor: "pointer",
   fontWeight: 500,
 };
 
 const primaryBtn = {
-  backgroundColor: "#3bb9af",
+  backgroundColor: "#ee2028",
   color: "#fff",
   padding: "12px",
   border: "none",
@@ -442,7 +448,7 @@ const primaryBtn = {
 const secondaryBtn = {
   background: "#fff",
   border: "1px solid #cbd5e1",
-  color: "#3bb9af",
+  color: "#ee2028",
   padding: "12px",
   borderRadius: 8,
   textAlign: "center",

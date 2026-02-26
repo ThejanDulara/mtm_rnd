@@ -1,0 +1,171 @@
+/* responsive.css - Added to make the site responsive and add modern animations */
+
+/* --- Animations --- */
+@keyframes slideUpFade {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.animate-slide-up {
+    animation: slideUpFade 0.6s ease-out forwards;
+}
+
+.tool-card {
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important;
+}
+
+.tool-card:hover {
+    transform: translateY(-8px) scale(1.02) !important;
+    box-shadow: 0 15px 30px rgba(238, 32, 40, 0.15) !important;
+    border-color: #ee2028 !important;
+}
+
+/* --- Header Responsive --- */
+@media (max-width: 900px) {
+
+    /* Header */
+    header {
+        flex-wrap: wrap !important;
+        gap: 10px !important;
+        justify-content: center !important;
+        padding: 10px !important;
+    }
+
+    header>div:nth-child(1) {
+        /* Tagline left */
+        display: none !important;
+    }
+
+    header>div:nth-child(2) {
+        /* Logo center */
+        position: static !important;
+        transform: none !important;
+        width: 100% !important;
+        justify-content: center !important;
+        margin-bottom: 4px !important;
+    }
+
+    header>div:nth-child(2) h1 {
+        font-size: 1.1rem !important;
+        /* Scale title down */
+        white-space: normal !important;
+        text-align: center !important;
+    }
+
+    header>div:nth-child(2) img {
+        height: 30px !important;
+        /* Scale logo down */
+    }
+
+    header>div:nth-child(3) {
+        /* User right */
+        width: 100% !important;
+        justify-content: center !important;
+        flex-direction: column !important;
+        /* Stack context tag and sign in button vertically */
+        gap: 10px !important;
+    }
+}
+
+/* --- Landing Responsive --- */
+@media (max-width: 900px) {
+
+    /* Fix flex wrap layouts when pushed into a column so they span out normally without shifting bounds */
+    section[style*="display: flex"] {
+        flex-direction: column !important;
+        align-items: stretch !important;
+    }
+
+    section[style*="display: flex"]>div {
+        flex: 1 1 auto !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    section[style*="minHeight: 85vh"],
+    section[style*="min-height: 85vh"] {
+        min-height: auto !important;
+        flex-direction: column !important;
+        padding: 20px 10px !important;
+    }
+
+    section[style*="minHeight: 85vh"]>div {
+        border-radius: 16px !important;
+        width: 100% !important;
+        margin-bottom: 20px !important;
+    }
+
+    section[style*="minHeight: 85vh"]>div:last-child {
+        margin-bottom: 0 !important;
+    }
+}
+
+/* --- Dashboard / General Responsive --- */
+@media (max-width: 768px) {
+
+    .cardGrid,
+    .card-grid,
+    div[style*="gridTemplateColumns"] {
+        grid-template-columns: 1fr !important;
+    }
+
+    .content-container {
+        padding: 0 10px !important;
+    }
+
+    .section-wrapper {
+        padding: 1rem !important;
+    }
+
+    /* Target component wrappers like Dashboard */
+    .dashboard-page-wrapper {
+        padding: 20px 10px !important;
+    }
+
+    .hero-inner-container {
+        padding: 20px !important;
+        width: 100% !important;
+    }
+
+    h1 {
+        font-size: 2em !important;
+    }
+}
+
+/* --- Fix input styles for auth pages on mobile --- */
+@media (max-width: 600px) {
+
+    .signup-name-grid {
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    div[style*="padding: 40px 36px"] {
+        padding: 24px 20px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+        margin: 0 auto !important;
+        /* Force center alignment inside panel */
+    }
+
+    /* Force the right side form flex-wrapper to use 100% width cleanly */
+    div[style*="background: #f8fafc"],
+    div[style*="background: rgb(248, 250, 252)"] {
+        padding: 20px 10px !important;
+        width: 100% !important;
+        box-sizing: border-box !important;
+    }
+
+    form div[style*="display: flex"][style*="justify-content: space-between"] {
+        flex-direction: column !important;
+        align-items: flex-start !important;
+        gap: 10px !important;
+    }
+}

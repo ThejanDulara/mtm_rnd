@@ -33,15 +33,15 @@ function Header() {
           <div style={styles.userSection}>
             <span style={styles.environment}>Hi, {user.first_name}</span>
             <div style={styles.avatarWrap} onClick={() => setOpen(v => !v)}>
-            {user.profile_pic ? (
-              <img
-                src={`${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${user.profile_pic}`}
-                alt="profile"
-                style={styles.avatarImg}
-              />
-            ) : (
-              <div style={styles.avatarFallback}>{initials || "U"}</div>
-            )}
+              {user.profile_pic ? (
+                <img
+                  src={`${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${user.profile_pic}`}
+                  alt="profile"
+                  style={styles.avatarImg}
+                />
+              ) : (
+                <div style={styles.avatarFallback}>{initials || "U"}</div>
+              )}
             </div>
             {open && (
               <div style={styles.menu}>
@@ -114,7 +114,7 @@ const styles = {
     position: 'absolute',
     left: '50%',
     transform: 'translateX(-50%)',
-    flexShrink: 0,
+    flexShrink: 0
   },
   right: {
     flex: 1,
@@ -160,7 +160,7 @@ const styles = {
     whiteSpace: 'nowrap'
   },
   signinBtn: {
-    background: '#3bb9af',
+    background: '#ee2028',
     color: '#fff',
     padding: '8px 14px',
     borderRadius: 8,
@@ -203,23 +203,23 @@ const styles = {
     zIndex: 10,
     marginTop: '8px'
   },
-    menuItem: {
-      display: "block",
-      width: "100%",
-      textAlign: "left",
-      padding: "10px 12px",
-      background: "transparent",
-      border: "none",
-      cursor: "pointer",
-      fontSize: "14px",
-      color: "#2d3748",
-      lineHeight: "1.2",
-    },
-    menuDivider: {
-      height: 1,
-      backgroundColor: "#e2e8f0",
-      margin: "4px 0",
-    }
+  menuItem: {
+    display: "block",
+    width: "100%",
+    textAlign: "left",
+    padding: "10px 12px",
+    background: "transparent",
+    border: "none",
+    cursor: "pointer",
+    fontSize: "14px",
+    color: "#2d3748",
+    lineHeight: "1.2",
+  },
+  menuDivider: {
+    height: 1,
+    backgroundColor: "#e2e8f0",
+    margin: "4px 0",
+  }
 };
 
 export default Header;

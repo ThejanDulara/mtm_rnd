@@ -262,7 +262,7 @@ const card = {
 const sectionTitle = {
   fontSize: 20,
   fontWeight: 600,
-  color: "#3bb9af",
+  color: "#ee2028",
   marginBottom: 16,
 };
 
@@ -308,7 +308,7 @@ const emptyText = {
 };
 
 const btnApprove = {
-  backgroundColor: "#3bb9af",
+  backgroundColor: "#ee2028",
   color: "#fff",
   border: "none",
   padding: "6px 12px",
@@ -320,7 +320,7 @@ const btnApprove = {
 };
 
 const btnReject = {
-  backgroundColor: "#b3dc39",
+  backgroundColor: "#111111",
   color: "#000",
   border: "none",
   padding: "6px 12px",

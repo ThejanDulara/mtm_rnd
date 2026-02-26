@@ -103,18 +103,24 @@ export default function Profile() {
 
   return (
     <>
-      <section style={pageWrapper}>
+      <section style={pageWrapper} className="auth-page-wrapper">
         {/* Left gradient panel */}
-        <div style={leftPanel}>
-          <div style={leftInner}>
+        <div style={leftPanel} className="auth-left-panel">
+          <div style={leftInner} className="auth-left-inner">
             <img
               src="/MTM.png"
               alt="MTM"
               style={{
-                height: 400,
+                maxHeight: 400,
+                maxWidth: "100%",
+                height: "auto",
+                objectFit: "contain",
                 marginBottom: 30,
                 filter: "drop-shadow(0 2px 6px rgba(0,0,0,0.2))",
+                margin: "0 auto 30px auto",
+                display: "block"
               }}
+              className="auth-hero-img"
             />
             <h1 style={leftTitle}>Your Media Profile</h1>
             <p style={leftText}>
@@ -128,15 +134,15 @@ export default function Profile() {
         <div style={rightPanel}>
           <div style={formBox}>
             <div style={{ textAlign: "center", marginBottom: 24 }}>
-                {user.profile_pic ? (
-                  <img
-                    src={`${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${user.profile_pic}`}
-                    alt="Profile"
-                    style={headerImg}
-                  />
-                ) : (
-                  <div style={iconCircle}>👤</div>
-                )}
+              {user.profile_pic ? (
+                <img
+                  src={`${import.meta.env.VITE_API_BASE_URL || "https://mtmbackend-production.up.railway.app"}${user.profile_pic}`}
+                  alt="Profile"
+                  style={headerImg}
+                />
+              ) : (
+                <div style={iconCircle}>👤</div>
+              )}
               <h2 style={formTitle}>
                 {user.first_name} {user.last_name}
               </h2>
@@ -146,6 +152,7 @@ export default function Profile() {
             {/* Profile Info */}
             <div style={{ display: "grid", gap: 16 }}>
               <div
+                className="signup-name-grid"
                 style={{
                   display: "grid",
                   gridTemplateColumns: "1fr 1fr",
@@ -306,6 +313,7 @@ const pageWrapper = {
   width: "100%",
   minHeight: "100vh",   // ✅ allow full height
   display: "flex",
+  flexWrap: "wrap",
   overflowX: "hidden",  // ✅ only hide horizontal scroll
   background: "#fff",
   position: "relative",
@@ -313,16 +321,16 @@ const pageWrapper = {
 
 const leftPanel = {
   flex: 1,
-  background: "linear-gradient(135deg, #3bb9af 0%, #b3dc39 100%)",
+  background: "linear-gradient(135deg, #ee2028 0%, #111111 100%)",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
   color: "#fff",
-  padding: "60px 40px",
+  padding: "clamp(20px, 4vw, 40px) clamp(10px, 3vw, 20px)",
 };
-const leftInner = { textAlign: "center", maxWidth: 500 };
+const leftInner = { textAlign: "center", maxWidth: 500, width: "100%" };
 const leftTitle = { fontSize: 32, fontWeight: 700, marginBottom: 16 };
-const leftText = { fontSize: 18, lineHeight: 1.6, color: "#000" };
+const leftText = { fontSize: 18, lineHeight: 1.6, color: "rgba(255,255,255,0.9)" };
 
 const rightPanel = {
   flex: 1,
@@ -330,7 +338,7 @@ const rightPanel = {
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
-  padding: "40px 20px",
+  padding: "clamp(20px, 5vw, 40px) clamp(15px, 4vw, 30px)",
 };
 
 const formBox = {
@@ -352,7 +360,7 @@ const iconCircle = {
   width: 70,
   height: 70,
   borderRadius: "50%",
-  backgroundColor: "#76cec7",
+  backgroundColor: "#ff4d54",
   display: "flex",
   alignItems: "center",
   justifyContent: "center",
@@ -365,7 +373,7 @@ const headerImg = {
   height: 80,
   borderRadius: "50%",
   objectFit: "cover",
-  border: "2px solid #3bb9af",
+  border: "2px solid #ee2028",
   marginBottom: 12,
 };
 
@@ -388,7 +396,7 @@ const inputStyle = {
 };
 
 const primaryBtn = {
-  backgroundColor: "#3bb9af",
+  backgroundColor: "#ee2028",
   color: "#fff",
   padding: "12px",
   border: "none",
@@ -400,8 +408,8 @@ const primaryBtn = {
 };
 
 const secondaryBtn = {
-  backgroundColor: "#b3dc39",
-  color: "#000",
+  backgroundColor: "#111111",
+  color: "#fff",
   padding: "10px 14px",
   border: "none",
   borderRadius: 8,
@@ -413,6 +421,6 @@ const secondaryBtn = {
 const sectionTitle = {
   fontSize: 16,
   fontWeight: 600,
-  color: "#3bb9af",
+  color: "#ee2028",
   marginBottom: 8,
 };

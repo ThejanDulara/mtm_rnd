@@ -147,7 +147,7 @@ function MediaCarousel({ media, imageIntervalMs = 1000 }) {
           width: 12px; height: 4px; padding: 0; line-height: 1;
           border-radius: 0; border: none; background: rgba(255,255,255,0.7); cursor: pointer;
         }
-        .dots button.active { background: #6e45e2; }
+        .dots button.active { background: #000000; }
       `}</style>
     </div>
   );

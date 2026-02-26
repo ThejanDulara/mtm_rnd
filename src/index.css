@@ -13,13 +13,20 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 a {
   font-weight: 500;
-  color: #646cff;
+  color: #ee2028;
   text-decoration: inherit;
 }
+
 a:hover {
-  color: #535bf2;
+  color: #ff4d54;
 }
 
 body {
@@ -45,9 +52,11 @@ button {
   cursor: pointer;
   transition: border-color 0.25s;
 }
+
 button:hover {
-  border-color: #646cff;
+  border-color: #ee2028;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
@@ -58,16 +67,19 @@ button:focus-visible {
     color: #213547;
     background-color: #ffffff;
   }
+
   a:hover {
-    color: #747bff;
+    color: #ff4d54;
   }
+
   button {
     background-color: #f9f9f9;
   }
 }
 
 /* 🔧 Footer Fix: Stretch layout to full screen height */
-html, body {
+html,
+body {
   height: 100%;
 }
 
@@ -89,27 +101,59 @@ html, body {
 
 /* Global Animations */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes underlineGrow {
-  0% { transform: scaleX(0); }
-  20% { transform: scaleX(1); }
-  80% { transform: scaleX(1); }
-  100% { transform: scaleX(0); }
+  0% {
+    transform: scaleX(0);
+  }
+
+  20% {
+    transform: scaleX(1);
+  }
+
+  80% {
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0);
+  }
 }
 
 @keyframes rotateGradient {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /* Smooth scrolling */
@@ -119,7 +163,7 @@ html {
 
 /* Modern focus styles */
 *:focus {
-  outline: 2px dashed rgba(110, 69, 226, 0.5);
+  outline: 2px dashed rgba(0, 0, 0, 0.5);
   outline-offset: 4px;
 }
 
@@ -134,27 +178,59 @@ html {
 
 /* Global Animations */
 @keyframes gradientShift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
 @keyframes underlineGrow {
-  0% { transform: scaleX(0); }
-  20% { transform: scaleX(1); }
-  80% { transform: scaleX(1); }
-  100% { transform: scaleX(0); }
+  0% {
+    transform: scaleX(0);
+  }
+
+  20% {
+    transform: scaleX(1);
+  }
+
+  80% {
+    transform: scaleX(1);
+  }
+
+  100% {
+    transform: scaleX(0);
+  }
 }
 
 @keyframes rotateGradient {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 @keyframes float {
-  0% { transform: translateY(0px); }
-  50% { transform: translateY(-20px); }
-  100% { transform: translateY(0px); }
+  0% {
+    transform: translateY(0px);
+  }
+
+  50% {
+    transform: translateY(-20px);
+  }
+
+  100% {
+    transform: translateY(0px);
+  }
 }
 
 /* Smooth scrolling */
@@ -164,7 +240,7 @@ html {
 
 /* Modern focus styles */
 *:focus {
-  outline: 2px dashed rgba(110, 69, 226, 0.5);
+  outline: 2px dashed rgba(0, 0, 0, 0.5);
   outline-offset: 4px;
 }
 
@@ -180,9 +256,11 @@ input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,
 input:-webkit-autofill:active {
-  -webkit-box-shadow: 0 0 0px 1000px #f9fafb inset !important; /* same as your input bg */
+  -webkit-box-shadow: 0 0 0px 1000px #f9fafb inset !important;
+  /* same as your input bg */
   box-shadow: 0 0 0px 1000px #f9fafb inset !important;
-  -webkit-text-fill-color: #1a202c !important; /* dark text color */
+  -webkit-text-fill-color: #1a202c !important;
+  /* dark text color */
   caret-color: #1a202c;
   transition: background-color 5000s ease-in-out 0s;
 }
