@@ -15,7 +15,8 @@ const tools = [
   { name: 'Project Management tool', url: 'https://pm.mediafactorylk.agency/', icon: '🗃️', description: 'Manage all projects in one centralized workspace' },
   { name: 'Joseph W. Ostrow – Frequency Estimator ', url: 'https://fe.mediafactorylk.agency/', icon: '📐️', description: 'Frequency planning tool based on the Ostrow model for effective reach optimization' },
   { name: 'SOV/SOM Based Budget Planning tool', url: 'https://bp.mediafactorylk.agency/', icon: '🎯', description: 'Manage all projects in one centralized workspace' },
-  { name: 'Coming Soon', url: 'https://www.mediafactorylk.agency/dashboard', icon: '✨', description: 'AI-driven modules currently under development' },
+  { name: 'GRP processing tool', url: 'https://dpt.mediafactorylk.agency/', icon: '🧮'},
+  { name: 'Coming Soon', url: 'https://www.mediafactorylk.agency/dashboard', icon: '✨'},
 ];
 
 export default function Dashboard() {
